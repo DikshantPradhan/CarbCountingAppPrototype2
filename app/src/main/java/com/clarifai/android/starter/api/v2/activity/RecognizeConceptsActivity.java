@@ -26,8 +26,14 @@ import com.clarifai.android.starter.api.v2.ClarifaiUtil;
 import com.clarifai.android.starter.api.v2.R;
 import com.clarifai.android.starter.api.v2.adapter.RecognizeConceptsAdapter;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -35,6 +41,12 @@ import static android.view.View.VISIBLE;
 public final class RecognizeConceptsActivity extends BaseActivity {
 
   public static final int PICK_IMAGE = 100;
+
+  //ADDED FOR  DATABASE FUNCTIONALITY
+  Map<String, List<String>> db; // IMPORTANT MEMBER : database
+
+  List<String> keys; // IMPORTANT MEMBER : keys to database
+
 
   // the list of results that were returned from the API
   @BindView(R.id.resultsList) RecyclerView resultsList;
@@ -111,6 +123,22 @@ public final class RecognizeConceptsActivity extends BaseActivity {
           return;
         }
         adapter.setData(predictions.get(0).data());
+
+        // ADDED FOR DATABASE
+        try {
+          //messagetext.setText("ran database maybe");
+          readCSVToMap("ABBREV_2.txt");
+        }
+        catch (Exception e){
+          //
+        }
+        String exampleResult = predictions.get(0).data().get(0).name();
+        final List<String> list = listOfKeys(exampleResult);
+        final String key2 = list.get(1); // arbitrary selection of key (there are many options of cheese types!!!)
+
+        final List<String> val = db.get(key2);
+        final String message = String.valueOf(val.get(6)); //index 6 contains carb info
+
         imageView.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
       }
 
@@ -135,6 +163,41 @@ public final class RecognizeConceptsActivity extends BaseActivity {
         fab.setEnabled(!busy);
       }
     });
+  }
+
+  //ADDED FUNCTION FOR DATABASE
+  protected void readCSVToMap(String filename) throws Exception{ // IMPORTANT FUNCTION
+    db = new HashMap<String, List<String>>();
+    keys = new ArrayList<String>();
+    InputStream is = getAssets().open("ABBREV_2.txt");
+    //File f = new File(path.toURI());
+    //File f = new File(path.getFile());
+    BufferedReader in = new BufferedReader(new InputStreamReader(is));//new BufferedReader(new FileReader("ABBREV_2.txt"));
+    String line = "";
+    while ((line = in.readLine()) != null) {
+      String parts[] = line.split("\t");
+      List <String> nutrition = new ArrayList();
+      for (int i = 1; i < parts.length; i++){
+        nutrition.add(parts[i]);
+      }
+      db.put(parts[0], nutrition);
+      keys.add(parts[0]);
+    }
+    in.close();
+
+  }
+
+  protected List<String> listOfKeys(String food){ // IMPORTANT FUNCTION
+    food = food.toLowerCase();
+    List<String> trueKeys = new ArrayList<String>();
+
+    for (String key: keys){ // may want to pass in keys as parameter?
+      if (key.toLowerCase().contains(food)){
+        trueKeys.add(key);
+      }
+    }
+
+    return trueKeys;
   }
 
 }
