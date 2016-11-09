@@ -103,7 +103,7 @@ public final class RecognizeConceptsActivity extends BaseActivity {
     new AsyncTask<Void, Void, ClarifaiResponse<List<ClarifaiOutput<Concept>>>>() {
       @Override protected ClarifaiResponse<List<ClarifaiOutput<Concept>>> doInBackground(Void... params) {
         // The default Clarifai model that identifies concepts in images
-        final ConceptModel generalModel = App.get().clarifaiClient().getDefaultModels().generalModel();
+        final ConceptModel generalModel = App.get().clarifaiClient().getDefaultModels().foodModel();
 
         // Use this model to predict, with the image that the user just selected as the input
         return generalModel.predict()
@@ -124,9 +124,10 @@ public final class RecognizeConceptsActivity extends BaseActivity {
         }
         adapter.setData(predictions.get(0).data());
 
+        // INSERT METHOD FOR USER SELECTION OF FOOD
+
         // ADDED FOR DATABASE
         try {
-          //messagetext.setText("ran database maybe");
           readCSVToMap("ABBREV_2.txt");
         }
         catch (Exception e){
@@ -176,7 +177,7 @@ public final class RecognizeConceptsActivity extends BaseActivity {
     String line = "";
     while ((line = in.readLine()) != null) {
       String parts[] = line.split("\t");
-      List <String> nutrition = new ArrayList();
+      List<String> nutrition = new ArrayList();
       for (int i = 1; i < parts.length; i++){
         nutrition.add(parts[i]);
       }
