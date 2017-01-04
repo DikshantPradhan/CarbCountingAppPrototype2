@@ -107,8 +107,8 @@ public final class RecognizeConceptsActivity extends BaseActivity {
 
         // Use this model to predict, with the image that the user just selected as the input
         return generalModel.predict()
-            .withInputs(ClarifaiInput.forImage(ClarifaiImage.of(imageBytes)))
-            .executeSync();
+                .withInputs(ClarifaiInput.forImage(ClarifaiImage.of(imageBytes)))
+                .executeSync();
       }
 
       @Override protected void onPostExecute(ClarifaiResponse<List<ClarifaiOutput<Concept>>> response) {
@@ -145,9 +145,9 @@ public final class RecognizeConceptsActivity extends BaseActivity {
 
       private void showErrorSnackbar(@StringRes int errorString) {
         Snackbar.make(
-            root,
-            errorString,
-            Snackbar.LENGTH_INDEFINITE
+                root,
+                errorString,
+                Snackbar.LENGTH_INDEFINITE
         ).show();
       }
     }.execute();
