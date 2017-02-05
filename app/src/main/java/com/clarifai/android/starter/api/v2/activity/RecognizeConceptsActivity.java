@@ -10,6 +10,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
@@ -131,15 +132,17 @@ public final class RecognizeConceptsActivity extends BaseActivity {
           readCSVToMap("ABBREV_2.txt");
         }
         catch (Exception e){
-          //
+          Log.d("Failure", "CSV not read into database");
         }
         String exampleResult = predictions.get(0).data().get(0).name();
         final List<String> list = listOfKeys(exampleResult);
-        final String key2 = list.get(1); // arbitrary selection of key (there are many options of cheese types!!!)
+
+        // change this line to take in user input
+        final String key2 = list.get(0); // arbitrary selection of key
 
         final List<String> val = db.get(key2);
         final String message = String.valueOf(val.get(6)); //index 6 contains carb info
-
+        Log.d("Output", message);
         imageView.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
       }
 
