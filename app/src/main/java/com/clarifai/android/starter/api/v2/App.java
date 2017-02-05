@@ -1,6 +1,7 @@
 package com.clarifai.android.starter.api.v2;
 
 import android.app.Application;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import clarifai2.api.ClarifaiBuilder;
@@ -8,6 +9,9 @@ import clarifai2.api.ClarifaiClient;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import timber.log.Timber;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +37,45 @@ public class App extends Application {
   @Override
   public void onCreate() {
     INSTANCE = this;
+
+     //Context temp_context = Context();
+
+      Log.d("Alert Dialogue", "displaying message upon startup");
+
+    try{
+        Context temp_context = getApplicationContext();
+        Log.d("Alert Dialogue", "made temp");
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(temp_context);
+        Log.d("Alert Dialogue", "made builder");
+        builder1.setMessage("Write your message here.");
+        builder1.setCancelable(true);
+
+        Log.d("Alert Dialogue", "set message");
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+        Log.d("Alert Dialogue", "shown");
+    }
+    catch (Exception e){
+        Log.d("Alert Dialogue", "failed to display");
+    }
+
     client = new ClarifaiBuilder("qeNitO9lCdNO7k7UixA6yUXKIIX3-MolxrXUL4Oq", "zOxPlyS5BfqFCp_CVW1Y2ZkZyNW81IMQ6sAOkodR")
         // Optionally customize HTTP client via a custom OkHttp instance
         .client(new OkHttpClient.Builder()
