@@ -43,6 +43,9 @@ public class App extends Application {
       Log.d("Alert Dialogue", "displaying message upon startup");
 
     try{
+
+        DBHandler db = new DBHandler(getApplicationContext());
+
         Context temp_context = getApplicationContext();
         Log.d("Alert Dialogue", "made temp");
         AlertDialog.Builder builder1 = new AlertDialog.Builder(temp_context);
@@ -52,7 +55,7 @@ public class App extends Application {
 
         Log.d("Alert Dialogue", "set message");
 
-        builder1.setPositiveButton(
+        /*builder1.setPositiveButton(
                 "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -66,9 +69,10 @@ public class App extends Application {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
-                });
+                }); */
 
         AlertDialog alert11 = builder1.create();
+        Log.d("Alert Dialogue", "created");
         alert11.show();
         Log.d("Alert Dialogue", "shown");
     }
