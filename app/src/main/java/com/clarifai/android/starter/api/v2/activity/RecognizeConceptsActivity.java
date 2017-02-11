@@ -52,6 +52,9 @@ public final class RecognizeConceptsActivity extends BaseActivity {
   // the list of results that were returned from the API
   @BindView(R.id.resultsList) RecyclerView resultsList;
 
+  // interactable list of results
+
+
   // the view where the image the user selected is displayed
   @BindView(R.id.image) ImageView imageView;
 
